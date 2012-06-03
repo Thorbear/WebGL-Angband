@@ -259,12 +259,14 @@ var AngbandGame = (function() {
     AngbandGame.prototype.doneCallback = '';
     AngbandGame.prototype.fontSize = 16;
     AngbandGame.prototype.padding = 20;
-    AngbandGame.prototype.characterPosition = [0,0];
+    AngbandGame.prototype.characterPosition = [1,1];
     AngbandGame.prototype.character = {};
+    AngbandGame.prototype.map = {};
 
     function AngbandGame(context, keyEventHandler) {
         this.context = context;
         this.keyEventHandler = keyEventHandler;
+        this.map = new AngbandMap(20,20);
     };
 
     /**
@@ -318,7 +320,11 @@ var AngbandGame = (function() {
         this.context.textAlign = 'left';
         this.context.textBaseline = 'top';
 
+        // Draw sidebar
         this.renderSidebar(sidebar);
+
+        // Draw map
+        this.map.draw(this.context, this.padding + sidebar.width, this.padding, this.fontSize, this.fontSize);
     
         // Draw character
         this.context.fillStyle = 'white';
