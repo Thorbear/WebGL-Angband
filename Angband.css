@@ -1,0 +1,35 @@
+body {
+    text-align:center;
+    line-height:20px;
+    font-size:16px;
+    margin:0;
+}
+p {
+	margin:2px;
+	padding:0;
+}
+#stats {
+	display:none;
+	/*display:inline-block;*/
+	width:120px;
+	vertical-align:top;
+	margin:10px;
+}
+#stats p {
+	text-align:left;
+}
+#stats span {
+	text-align:right;
+	float:right;
+}
+
+#gameCanvas {
+	border:0;
+	margin:0;
+	padding:0;
+}
+
+#debug {
+	display:none;
+	margin: 5px 0px 0px 0px;
+}

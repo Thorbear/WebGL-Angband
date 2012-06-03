@@ -1,0 +1,41 @@
+<html>
+
+<head>
+
+	<title>Angband in WebGL!</title>
+	<link rel="stylesheet" type="text/css" href="Angband.css" />
+
+	<script type="text/javascript" src="Libs/webgl-utils.js"></script>
+	<script type="text/javascript" src="Character.js"></script>
+	<script type="text/javascript" src="Angband.js"></script>
+
+</head>
+
+<body onload="angbandStart();">
+    <div id="stats">
+    	<p id="name"></p>
+    	<p id="race"></p>
+    	<p id="class"></p>
+    	<p id="rank"></p>
+    	<p>-</p>
+    	<p>Level: <span id="level">1</span></p>
+    	<p>Exp: <span id="experience"></span></p>
+    	<p>Gold: <span id="gold">0</span></p>
+    	<p>-</p>
+    	<p>STR: <span id="str"></span></p>
+    	<p>INT: <span id="int"></span></p>
+    	<p>WIS: <span id="wis"></span></p>
+    	<p>DEX: <span id="dex"></span></p>
+    	<p>CON: <span id="con"></span></p>
+    	<p>CHR: <span id="chr"></span></p>
+    	<p>-</p>
+    	<p>Armor Class: <span id="ac"></span></p>
+    	<p>Max HP: <span id="maxhp"></span></p>
+    	<p>Current HP: <span id="curhp"></span></p>
+    	<p>Max Mana: <span id="maxmana">0</span></p>
+    	<p>Current Mana: <span id="curmana">0</span></p>
+    </div>
+    <canvas id="gameCanvas" width="500" height="500"></canvas><p id="debug"></p>
+</body>
+
+</html>
