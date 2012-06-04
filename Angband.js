@@ -320,15 +320,21 @@ var AngbandGame = (function() {
         this.context.textAlign = 'left';
         this.context.textBaseline = 'top';
 
+        // Apply left-padding and top-padding
+        this.context.translate(this.padding, this.padding);
+
         // Draw sidebar
         this.renderSidebar(sidebar);
 
+        // Apply left-padding to account for the sidebar
+        this.context.translate(sidebar.width, 0);
+
         // Draw map
-        this.map.draw(this.context, this.padding + sidebar.width, this.padding, this.fontSize, this.fontSize);
+        this.map.draw(this.context, this.fontSize, this.fontSize);
     
         // Draw character
         this.context.fillStyle = 'white';
-        this.context.fillText('@', sidebar.width+this.padding+(this.fontSize*this.characterPosition[0]), this.padding+(this.fontSize*this.characterPosition[1]));
+        this.context.fillText('@', (this.fontSize*this.characterPosition[0]), (this.fontSize*this.characterPosition[1]));
 
         // Restore previous context-state
         this.context.restore();
@@ -337,25 +343,25 @@ var AngbandGame = (function() {
     AngbandGame.prototype.renderSidebar = function(sidebar) {
         this.context.fillStyle = 'cyan';
         // Name, race, class
-        sidebar.currentLine += this.context.fillMultilineText(this.character.name, this.padding, this.padding+sidebar.currentLine*this.fontSize, this.fontSize);
-        sidebar.currentLine += this.context.fillMultilineText(this.character.race.name, this.padding, this.padding+sidebar.currentLine*this.fontSize, this.fontSize);
-        sidebar.currentLine += this.context.fillMultilineText(this.character.class.name, this.padding, this.padding+sidebar.currentLine*this.fontSize, this.fontSize);
+        sidebar.currentLine += this.context.fillMultilineText(this.character.name, 0, sidebar.currentLine*this.fontSize, this.fontSize);
+        sidebar.currentLine += this.context.fillMultilineText(this.character.race.name, 0, sidebar.currentLine*this.fontSize, this.fontSize);
+        sidebar.currentLine += this.context.fillMultilineText(this.character.class.name, 0, sidebar.currentLine*this.fontSize, this.fontSize);
         sidebar.currentLine++; // Vertical space
 
         // Level, exp, gold
-        sidebar.currentLine += this.context.fillMultilineText('Level: 1', this.padding, this.padding+sidebar.currentLine*this.fontSize, this.fontSize);
-        sidebar.currentLine += this.context.fillMultilineText('Exp: ' + this.character.experience, this.padding, this.padding+sidebar.currentLine*this.fontSize, this.fontSize);
-        sidebar.currentLine += this.context.fillMultilineText('Gold: ' + this.character.gold, this.padding, this.padding+sidebar.currentLine*this.fontSize, this.fontSize);
+        sidebar.currentLine += this.context.fillMultilineText('Level: 1', 0, sidebar.currentLine*this.fontSize, this.fontSize);
+        sidebar.currentLine += this.context.fillMultilineText('Exp: ' + this.character.experience, 0, sidebar.currentLine*this.fontSize, this.fontSize);
+        sidebar.currentLine += this.context.fillMultilineText('Gold: ' + this.character.gold, 0, sidebar.currentLine*this.fontSize, this.fontSize);
         sidebar.currentLine++; // Vertical space
 
         // Stats
         for (var i = 0; i < this.character.stats.length; i++) {
-            sidebar.currentLine += this.context.fillMultilineText(this.character.stats[i].shortName + ": " + this.character.stats[i].currentValue, this.padding, this.padding+sidebar.currentLine*this.fontSize, this.fontSize);
+            sidebar.currentLine += this.context.fillMultilineText(this.character.stats[i].shortName + ": " + this.character.stats[i].currentValue, 0, sidebar.currentLine*this.fontSize, this.fontSize);
         };
         sidebar.currentLine++; // Vertical space
 
         // cur/max HP
-        sidebar.currentLine += this.context.fillMultilineText('HP: 10/10', this.padding, this.padding+sidebar.currentLine*this.fontSize, this.fontSize);
+        sidebar.currentLine += this.context.fillMultilineText('HP: 10/10', 0, sidebar.currentLine*this.fontSize, this.fontSize);
     };
 
     AngbandGame.prototype.animate = function() {

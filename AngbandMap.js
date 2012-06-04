@@ -5,7 +5,6 @@
  *
  * going for idea #2 first
  * 
- * TODO: need to look into whether these objects really need to be passed their coordinates when drawing
  */
 
 /**
@@ -31,10 +30,13 @@ var AngbandMap = (function() {
 		return this.tiles[x][y].isWall();
 	};
 
-	AngbandMap.prototype.draw = function(context, x, y, fontHeight, fontWidth) {
+	AngbandMap.prototype.draw = function(context, fontHeight, fontWidth) {
 		for (var i = this.tiles.length - 1; i >= 0; i--) {
 			for (var j = this.tiles[i].length - 1; j >= 0; j--) {
-				this.tiles[i][j].draw(context, x + i*fontWidth, y+j*fontHeight);
+				context.save();
+				context.translate(i*fontWidth, j*fontHeight);
+				this.tiles[i][j].draw(context);
+				context.restore();
 			};
 		};
 	};
@@ -64,13 +66,13 @@ var AngbandTile = (function() {
 		this.terrain = terrain;
 	};
 
-	AngbandTile.prototype.draw = function(context, x, y) {
+	AngbandTile.prototype.draw = function(context) {
 		if(typeof this.creature != 'undefined') {
-			this.creature.draw(context, x, y);
+			this.creature.draw(context);
 		} else if(typeof this.item != 'undefined') {
-			this.item.draw(context, x, y);
+			this.item.draw(context);
 		} else {
-			this.terrain.draw(context, x, y);
+			this.terrain.draw(context);
 		}
 	};
 
@@ -84,9 +86,9 @@ var AngbandDrawableObject = (function() {
 	function AngbandDrawableObject() {
 	};
 
-	AngbandDrawableObject.prototype.draw = function(context, x, y) {
+	AngbandDrawableObject.prototype.draw = function(context) {
 		context.fillStyle = this.color;
-		context.fillText(this.symbol, x, y);
+		context.fillText(this.symbol, 0, 0);
 	};
 
 	return AngbandDrawableObject;
