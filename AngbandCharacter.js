@@ -8,6 +8,7 @@
  * TODO: add inventory and equipment
  */
 var Character = (function() {
+	Character.prototype = new AngbandDrawableObject;
 	Character.prototype.statNames = ['Strength', 'Intelligence', 'Wisdom', 'Dexterity', 'Constitution', 'Charisma'];
 	Character.prototype.statShortNames = ['STR', 'INT', 'WIS', 'DEX', 'CON', 'CHR'];
 	Character.prototype.name = '';
@@ -22,6 +23,8 @@ var Character = (function() {
 		this.name = name;
 		this.race = characterRace;
 		this.class = characterClass;
+		this.color = 'white';
+		this.symbol = '@';
 		
 		/* Generate birth stats based on priority and race/class */
 		this.birth(statPriority);

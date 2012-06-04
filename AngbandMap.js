@@ -12,6 +12,7 @@
  */
 var AngbandMap = (function() {
 	AngbandMap.prototype.tiles = [];
+	AngbandMap.prototype.entities = [];
 
 	function AngbandMap(width, height) {
 		// Initialize map
@@ -28,6 +29,38 @@ var AngbandMap = (function() {
 
 	AngbandMap.prototype.isWall = function(x, y) {
 		return this.tiles[x][y].isWall();
+	};
+
+	AngbandMap.prototype.addCreature = function(creature, x, y) {
+		if(this.tiles[x][y].hasCreature()) {
+			throw new Error("Tile already has a creature");
+		} else {
+			creature.entityID = this.entities.length;
+			creature.position = [x,y];
+			this.entities.push(creature);
+			this.tiles[x][y].addCreature(creature);
+			return creature.entityID; // caller's reference
+		};
+	};
+
+	/**
+	 * moves the creature x tiles horizontally and y tiles vertically
+	 */
+	AngbandMap.prototype.moveCreature = function(id, x, y) {
+		if(id >= this.entities.length || id < 0) {
+			throw new Error("No such entity");
+		} else {
+			var creature = this.entities[id];
+			var newX = creature.position[0] + x;
+			var newY = creature.position[1] + y;
+			if(this.tiles[newX][newY].isWall()) {
+				throw new Error("There is a wall in the way!");
+			} else {
+				this.tiles[creature.position[0]][creature.position[1]].removeCreature();
+				creature.position = [newX, newY];
+				this.tiles[newX][newY].addCreature(creature);
+			};
+		};
 	};
 
 	AngbandMap.prototype.draw = function(context, fontHeight, fontWidth) {
@@ -60,6 +93,25 @@ var AngbandTile = (function() {
 
 	AngbandTile.prototype.isWall = function() {
 		return this.terrain instanceof AngbandWall;
+	};
+
+	AngbandTile.prototype.hasCreature = function() {
+		return (typeof this.creature != 'undefined');
+	};
+
+	AngbandTile.prototype.addCreature = function(creature) {
+		if(typeof this.creature == 'undefined') {
+			this.creature = creature;
+			return true;
+		} else { // This tile already has a creature
+			return false;
+		};
+	};
+
+	AngbandTile.prototype.removeCreature = function() {
+		var creature = this.creature;
+		delete this.creature;
+		return creature;
 	};
 
 	AngbandTile.prototype.setTerrain = function(terrain) {

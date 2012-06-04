@@ -259,8 +259,9 @@ var AngbandGame = (function() {
     AngbandGame.prototype.doneCallback = '';
     AngbandGame.prototype.fontSize = 16;
     AngbandGame.prototype.padding = 20;
-    AngbandGame.prototype.characterPosition = [1,1];
+    //AngbandGame.prototype.characterPosition = [1,1];
     AngbandGame.prototype.character = {};
+    AngbandGame.prototype.characterID = {};
     AngbandGame.prototype.map = {};
 
     function AngbandGame(context, keyEventHandler) {
@@ -281,6 +282,7 @@ var AngbandGame = (function() {
 
     AngbandGame.prototype.setCharacter = function(character) {
         this.character = character;
+        this.characterID = this.map.addCreature(character, 1, 1);
     };
 
     AngbandGame.prototype.tick = function() {
@@ -333,8 +335,8 @@ var AngbandGame = (function() {
         this.map.draw(this.context, this.fontSize, this.fontSize);
     
         // Draw character
-        this.context.fillStyle = 'white';
-        this.context.fillText('@', (this.fontSize*this.characterPosition[0]), (this.fontSize*this.characterPosition[1]));
+        //this.context.fillStyle = 'white';
+        //this.context.fillText('@', (this.fontSize*this.characterPosition[0]), (this.fontSize*this.characterPosition[1]));
 
         // Restore previous context-state
         this.context.restore();
@@ -370,18 +372,30 @@ var AngbandGame = (function() {
         for (var i = 0; i < recentlyPressedKeys.length; i++) {
             switch(recentlyPressedKeys[i].keyCode) {
                 case this.keyEventHandler.KEYPRESS_UPARROW:
-                    this.characterPosition[1]--;
+                    this.moveCharacter(0,-1);
+                    //this.characterPosition[1]--;
                     break;
                 case this.keyEventHandler.KEYPRESS_DOWNARROW:
-                    this.characterPosition[1]++;
+                    this.moveCharacter(0,1);
+                    //this.characterPosition[1]++;
                     break;
                 case this.keyEventHandler.KEYPRESS_LEFTARROW:
-                    this.characterPosition[0]--;
+                    this.moveCharacter(-1,0);
+                    //this.characterPosition[0]--;
                     break;
                 case this.keyEventHandler.KEYPRESS_RIGHTARROW:
-                    this.characterPosition[0]++;
+                    this.moveCharacter(1,0);
+                    //this.characterPosition[0]++;
                     break;
             };
+        };
+    };
+
+    AngbandGame.prototype.moveCharacter = function(x, y) {
+        try {
+            this.map.moveCreature(this.characterID, x, y);
+        } catch(e) {
+            console.log(e.message);
         };
     };
 
